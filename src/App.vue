@@ -1,5 +1,5 @@
 <template>
-  <todo-app />
+  <TodoApp />
 </template>
 
 <script lang="ts">
@@ -13,6 +13,7 @@ export default defineComponent({
   },
 });
 </script>
+
 <style>
 * {
   margin: 0;
