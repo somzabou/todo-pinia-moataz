@@ -3,8 +3,8 @@
     <div class="item">
       <span :class="{ completed: todo.completed }">{{ todo.item }}</span>
       <div>
-        <span @click.stop="toggleCompleted(todo.id)">&#10004;</span>
-        <span @click="deleteTodo(todo.id)" class="x">&#10060;</span>
+        <span @click.stop="toggleCompleted(todo.id)">done</span>
+        <span @click="deleteTodo(todo.id)" class="x">x</span>
       </div>
     </div>
   </div>
