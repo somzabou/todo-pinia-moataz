@@ -11,11 +11,6 @@
       />
       <button type="submit">Add Employee</button>
     </form>
-    <div class="info-details" v-for="employee in employees" :key="employee.id">
-      <p><strong>Name:</strong> {{ employee.name }}</p>
-      <p><strong>Position:</strong> {{ employee.position }}</p>
-      <p><strong>Department:</strong> {{ employee.department }}</p>
-    </div>
   </div>
 </template>
 

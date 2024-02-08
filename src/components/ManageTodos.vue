@@ -1,11 +1,8 @@
 <template>
   <div class="manage-todos">
     <h1>Manage Todos</h1>
-    <input
-      v-model="employeeId"
-      @input="fetchTodos"
-      placeholder="Enter employee ID"
-    />
+    <input v-model="employeeId" placeholder="Enter employee ID" />
+    <button @click="fetchTodos">Show Todos</button>
     <div class="todo-details" v-for="todo in todos" :key="todo.id">
       <p><strong>Todo ID:</strong> {{ todo.id }}</p>
       <p><strong>Todo:</strong> {{ todo.item }}</p>
