@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit.prevent="addItemAndClear(todo)">
+    <form @submit.prevent="addItemAndClear">
       <input v-model="todo" type="text" /><button>Add</button>
       <div class="alert-div">
         <div v-show="store.showAlert" class="alert">
@@ -14,20 +14,20 @@
 <script lang="ts">
 import { ref, defineComponent } from "vue";
 import { useTodoListStore } from "../store/useTodoListStore";
+
 export default defineComponent({
   setup() {
     const todo = ref("");
     const store = useTodoListStore();
 
-    function addItemAndClear(item: string) {
-      if (item.length === 0) {
+    function addItemAndClear() {
+      if (todo.value.length === 0) {
         store.inputAlert();
         return;
       }
-      store.addTodo(item);
+      store.addTodo(todo.value);
       todo.value = "";
     }
-
     return { todo, addItemAndClear, store };
   },
 });
@@ -46,7 +46,7 @@ input {
 }
 button {
   margin-left: 30px;
-  background-color: #2f6089;
+  background-color: #595656;
   padding: 5px 10px;
   border: none;
   border-radius: 5px;

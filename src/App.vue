@@ -1,16 +1,22 @@
 <template>
-  <TodoApp />
+  <div id="app">
+    <div id="nav">
+      <router-link to="/todo-app">Todo App</router-link> |
+      <router-link to="/employee-info">Employee Info</router-link> |
+      <router-link to="/manage-todos">Mange Todos</router-link>
+      <router-view />
+    </div>
+    <div>
+      <todo-app />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import TodoApp from "./components/TodoApp.vue";
 
 export default defineComponent({
   name: "App",
-  components: {
-    TodoApp,
-  },
 });
 </script>
 
