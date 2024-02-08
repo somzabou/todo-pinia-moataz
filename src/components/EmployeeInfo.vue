@@ -11,6 +11,18 @@
       />
       <button type="submit">Add Employee</button>
     </form>
+    <button @click="showEmployees = !showEmployees">
+      {{ showEmployees ? "Hide" : "Show" }} Employees
+    </button>
+    <div v-if="showEmployees">
+      <template v-for="employee in employees" :key="employee.id">
+        <div class="info-details">
+          <p><strong>Name:</strong> {{ employee.name }}</p>
+          <p><strong>Position:</strong> {{ employee.position }}</p>
+          <p><strong>Department:</strong> {{ employee.department }}</p>
+        </div>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -23,6 +35,7 @@ export default defineComponent({
   setup() {
     const store = useEmployeeInfoStore();
     const newEmployee = ref({ name: "", position: "", department: "" });
+    const showEmployees = ref(false); // Add this line
 
     const addEmployee = () => {
       store.addEmployee(
@@ -37,10 +50,8 @@ export default defineComponent({
       employees: store.employees,
       newEmployee,
       addEmployee,
+      showEmployees, // Include showEmployees in the returned object
     };
   },
-  // Your component options here
 });
 </script>
-
-<!-- Your styles here -->
