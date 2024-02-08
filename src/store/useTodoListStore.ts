@@ -4,6 +4,7 @@ interface ToDoItem {
   item: string;
   id: number;
   completed: boolean;
+  employeeId: string;
 }
 
 export const useTodoListStore = defineStore("todoList", {
@@ -13,8 +14,8 @@ export const useTodoListStore = defineStore("todoList", {
     showAlert: false,
   }),
   actions: {
-    addTodo(item: string) {
-      this.todoList.push({ item, id: this.id++, completed: false });
+    addTodo(item: string, employeeId: string) {
+      this.todoList.push({ item, id: this.id++, completed: false, employeeId }); // Include employeeId when creating a new todo
     },
     deleteTodo(itemID: number) {
       this.todoList = this.todoList.filter((object) => {
@@ -32,6 +33,10 @@ export const useTodoListStore = defineStore("todoList", {
       setTimeout(() => {
         this.showAlert = false;
       }, 1000);
+    },
+    getTodosByEmployeeId(employeeId: string) {
+      // Add this method
+      return this.todoList.filter((todo) => todo.employeeId === employeeId);
     },
   },
 });

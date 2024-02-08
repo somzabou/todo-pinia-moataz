@@ -1,26 +1,51 @@
 <template>
-  <div>
-    <h1>Employee Information</h1>
-    <p>Name: {{ employee.name }}</p>
-    <p>Position: {{ employee.position }}</p>
-    <p>Department: {{ employee.department }}</p>
+  <div class="employee-info">
+    <h1>Manage Employee</h1>
+    <form @submit.prevent="addEmployee">
+      <input v-model="newEmployee.name" placeholder="Name" required />
+      <input v-model="newEmployee.position" placeholder="Position" required />
+      <input
+        v-model="newEmployee.department"
+        placeholder="Department"
+        required
+      />
+      <button type="submit">Add Employee</button>
+    </form>
+    <div class="info-details" v-for="employee in employees" :key="employee.id">
+      <p><strong>Name:</strong> {{ employee.name }}</p>
+      <p><strong>Position:</strong> {{ employee.position }}</p>
+      <p><strong>Department:</strong> {{ employee.department }}</p>
+    </div>
   </div>
 </template>
-<script>
-import { defineComponent } from "vue";
+
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+import { useEmployeeInfoStore } from "../store/useEmployeeInfoStore";
+
 export default defineComponent({
   name: "EmployeeInfo",
-  data() {
+  setup() {
+    const store = useEmployeeInfoStore();
+    const newEmployee = ref({ name: "", position: "", department: "" });
+
+    const addEmployee = () => {
+      store.addEmployee(
+        newEmployee.value.name,
+        newEmployee.value.position,
+        newEmployee.value.department
+      );
+      newEmployee.value = { name: "", position: "", department: "" };
+    };
+
     return {
-      employee: {
-        name: "John Doe",
-        position: "Software Developer",
-        department: "Engineering",
-      },
+      employees: store.employees,
+      newEmployee,
+      addEmployee,
     };
   },
   // Your component options here
 });
 </script>
 
-<style scoped></style>
+<!-- Your styles here -->

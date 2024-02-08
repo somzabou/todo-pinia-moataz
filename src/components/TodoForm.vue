@@ -1,7 +1,9 @@
 <template>
   <div>
     <form @submit.prevent="addItemAndClear">
-      <input v-model="todo" type="text" /><button>Add</button>
+      <input v-model="employeeId" type="text" placeholder="Employee ID" />
+      <input v-model="todo" type="text" placeholder="Todo" />
+      <button>Add</button>
       <div class="alert-div">
         <div v-show="store.showAlert" class="alert">
           Please type something...
@@ -18,50 +20,22 @@ import { useTodoListStore } from "../store/useTodoListStore";
 export default defineComponent({
   setup() {
     const todo = ref("");
+    const employeeId = ref(""); // Add this line
     const store = useTodoListStore();
 
     function addItemAndClear() {
-      if (todo.value.length === 0) {
+      if (todo.value.length === 0 || employeeId.value.length === 0) {
+        // Check if employeeId is also provided
         store.inputAlert();
         return;
       }
-      store.addTodo(todo.value);
+      store.addTodo(todo.value, employeeId.value); // Pass employeeId when adding a todo
       todo.value = "";
+      employeeId.value = ""; // Clear the employeeId input field
     }
-    return { todo, addItemAndClear, store };
+    return { todo, addItemAndClear, store, employeeId }; // Include employeeId in the returned object
   },
 });
 </script>
 
-<style scoped>
-form {
-  margin-bottom: 15px;
-}
-
-input {
-  margin-top: 25px;
-  margin-bottom: 15px;
-  height: 20px;
-  width: 50%;
-}
-button {
-  margin-left: 30px;
-  background-color: #595656;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-  font-weight: 800;
-  color: white;
-  width: 15%;
-}
-
-.alert-div {
-  min-height: 25px;
-}
-
-.alert {
-  color: #d1495b;
-  font-size: 1em;
-  font-weight: 600;
-}
-</style>
+<!-- The rest of your code remains the same -->
