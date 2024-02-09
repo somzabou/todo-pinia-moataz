@@ -4,6 +4,8 @@
       <router-link to="/todo-app">Todo App</router-link> |
       <router-link to="/employee-info">Manage Employee</router-link> |
       <router-link to="/manage-todos">Mange Todos</router-link>
+      <router-link to="/login">UserLogin</router-link>
+      <router-link to="/register">UserRegister</router-link>
       <router-view />
     </div>
     <div>

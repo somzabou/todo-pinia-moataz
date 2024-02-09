@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { useEmployeeInfoStore } from "../store/useEmployeeInfoStore";
 
 export default defineComponent({
@@ -35,7 +35,8 @@ export default defineComponent({
   setup() {
     const store = useEmployeeInfoStore();
     const newEmployee = ref({ name: "", position: "", department: "" });
-    const showEmployees = ref(false); // Add this line
+    const showEmployees = ref(false);
+    const showEmployeesByDepartment = ref(false);
 
     const addEmployee = () => {
       store.addEmployee(
@@ -46,11 +47,23 @@ export default defineComponent({
       newEmployee.value = { name: "", position: "", department: "" };
     };
 
+    const employeesByDepartment = computed(() => {
+      if (showEmployeesByDepartment.value) {
+        return store.employees.filter(
+          (employee) => employee.department === newEmployee.value.department
+        );
+      } else {
+        return [];
+      }
+    });
+
     return {
       employees: store.employees,
       newEmployee,
       addEmployee,
-      showEmployees, // Include showEmployees in the returned object
+      showEmployees,
+      showEmployeesByDepartment,
+      employeesByDepartment,
     };
   },
 });

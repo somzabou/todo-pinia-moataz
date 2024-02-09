@@ -5,6 +5,8 @@ interface Employee {
   name: string;
   position: string;
   department: string;
+  email: string;
+  password: string;
 }
 
 export const useEmployeeInfoStore = defineStore("employeeInfo", {
@@ -19,6 +21,8 @@ export const useEmployeeInfoStore = defineStore("employeeInfo", {
         name,
         position,
         department,
+        email: "",
+        password: "",
       });
     },
     deleteEmployee(employeeId: number) {
@@ -40,6 +44,22 @@ export const useEmployeeInfoStore = defineStore("employeeInfo", {
         employee.position = position;
         employee.department = department;
       }
+    },
+    registerEmployee(
+      name: string,
+      email: string,
+      password: string,
+      position: string,
+      department: string
+    ) {
+      this.employees.push({
+        id: this.id++,
+        name,
+        position,
+        department,
+        email,
+        password,
+      });
     },
   },
 });
