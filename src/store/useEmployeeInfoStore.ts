@@ -13,6 +13,7 @@ export const useEmployeeInfoStore = defineStore("employeeInfo", {
   state: () => ({
     employees: [] as Employee[],
     id: 0,
+    currentUser: null as Employee | null, // Add this line
   }),
   actions: {
     addEmployee(name: string, position: string, department: string) {
@@ -60,6 +61,18 @@ export const useEmployeeInfoStore = defineStore("employeeInfo", {
         email,
         password,
       });
+    },
+    async login(email: string, password: string) {
+      const employee = this.employees.find(
+        (employee) => employee.email === email && employee.password === password
+      );
+      if (employee) {
+        this.currentUser = employee;
+        return true;
+      } else {
+        // handle login failure
+        return false;
+      }
     },
   },
 });

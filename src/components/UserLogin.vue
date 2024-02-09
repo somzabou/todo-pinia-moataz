@@ -16,27 +16,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, nextTick, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useEmployeeInfoStore } from "../store/useEmployeeInfoStore";
 
 export default defineComponent({
   name: "UserLogin",
   setup() {
     const router = useRouter();
+    const store = useEmployeeInfoStore();
     const email = ref("");
     const password = ref("");
 
-    const login = () => {
-      // Replace this with your actual login logic
-      const loginSuccessful = true;
-
-      if (loginSuccessful) {
+    const login = async () => {
+      await store.login(email.value, password.value);
+      console.log(email);
+      if (store.currentUser) {
+        await nextTick();
+        console.log(email);
         router.push({ name: "TodoApp" });
       } else {
-        // Handle login failure
+        console.error("Login failed");
       }
     };
-
     return {
       email,
       password,

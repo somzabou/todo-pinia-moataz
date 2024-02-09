@@ -4,6 +4,7 @@ import TodoApp from "./components/TodoApp.vue";
 import ManageTodos from "./components/ManageTodos.vue";
 import UserLogin from "./components/UserLogin.vue";
 import UserRegister from "./components/UserRegister.vue";
+import { useEmployeeInfoStore } from "./store/useEmployeeInfoStore";
 
 const routes = [
   {
@@ -42,10 +43,9 @@ const router = createRouter({
   routes,
 });
 
-// Add navigation guard to check authentication before accessing protected routes
 router.beforeEach((to, from, next) => {
-  // const isAuthenticated = false;
-  if (to.meta.requiresAuth) {
+  const store = useEmployeeInfoStore();
+  if (to.meta.requiresAuth && !store.currentUser) {
     next({ name: "login" }); // Redirect to login page if not authenticated
   } else {
     next(); // Proceed to the requested route
