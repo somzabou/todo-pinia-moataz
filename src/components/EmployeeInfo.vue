@@ -1,70 +1,102 @@
 <template>
   <div class="employee-info">
-    <h1>Manage Employee</h1>
-    <form @submit.prevent="addEmployee">
-      <input v-model="newEmployee.name" placeholder="Name" required />
-      <input v-model="newEmployee.position" placeholder="Position" required />
+    <h1>Employee Details</h1>
+    <div v-if="currentUser" class="details-container">
+      <div class="info-details">
+        <p><strong>Name:</strong> {{ currentUser.name }}</p>
+        <p><strong>Position:</strong> {{ currentUser.position }}</p>
+        <p><strong>Department:</strong> {{ currentUser.department }}</p>
+        <button @click="editEmployee" class="edit-button">Edit Employee</button>
+      </div>
+    </div>
+    <form v-if="editing" @submit.prevent="updateEmployee" class="edit-form">
+      <input v-model="currentUser.name" placeholder="Name" required />
+      <input v-model="currentUser.position" placeholder="Position" required />
       <input
-        v-model="newEmployee.department"
+        v-model="currentUser.department"
         placeholder="Department"
         required
       />
-      <button type="submit">Add Employee</button>
+      <button type="submit" class="update-button">Update Employee</button>
     </form>
-    <button @click="showEmployees = !showEmployees">
-      {{ showEmployees ? "Hide" : "Show" }} Employees
-    </button>
-    <div v-if="showEmployees">
-      <template v-for="employee in employees" :key="employee.id">
-        <div class="info-details">
-          <p><strong>Name:</strong> {{ employee.name }}</p>
-          <p><strong>Position:</strong> {{ employee.position }}</p>
-          <p><strong>Department:</strong> {{ employee.department }}</p>
-        </div>
-      </template>
-    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref } from "vue";
 import { useEmployeeInfoStore } from "../store/useEmployeeInfoStore";
 
 export default defineComponent({
   name: "EmployeeInfo",
   setup() {
     const store = useEmployeeInfoStore();
-    const newEmployee = ref({ name: "", position: "", department: "" });
-    const showEmployees = ref(false);
-    const showEmployeesByDepartment = ref(false);
+    const editing = ref(false);
 
-    const addEmployee = () => {
-      store.addEmployee(
-        newEmployee.value.name,
-        newEmployee.value.position,
-        newEmployee.value.department
-      );
-      newEmployee.value = { name: "", position: "", department: "" };
+    const editEmployee = () => {
+      editing.value = true;
     };
 
-    const employeesByDepartment = computed(() => {
-      if (showEmployeesByDepartment.value) {
-        return store.employees.filter(
-          (employee) => employee.department === newEmployee.value.department
-        );
-      } else {
-        return [];
-      }
-    });
+    const updateEmployee = () => {
+      store.updateEmployee(
+        store.currentUser!.id,
+        store.currentUser!.name,
+        store.currentUser!.position,
+        store.currentUser!.department
+      );
+      editing.value = false;
+    };
 
     return {
-      employees: store.employees,
-      newEmployee,
-      addEmployee,
-      showEmployees,
-      showEmployeesByDepartment,
-      employeesByDepartment,
+      currentUser: store.currentUser,
+      editing,
+      editEmployee,
+      updateEmployee,
     };
   },
 });
 </script>
+
+<style scoped>
+.employee-info {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 900vh; /* Set the height to 100% of the viewport height */
+}
+
+.details-container {
+  margin-top: 20px;
+}
+
+.info-details {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.edit-button,
+.update-button {
+  padding: 10px 15px;
+  font-size: 14px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover,
+.update-button:hover {
+  background-color: #2980b9;
+}
+
+.edit-form {
+  margin-top: 20px;
+}
+</style>

@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import router from "@/router";
 
 interface Employee {
   id: number;
@@ -13,7 +14,7 @@ export const useEmployeeInfoStore = defineStore("employeeInfo", {
   state: () => ({
     employees: [] as Employee[],
     id: 0,
-    currentUser: null as Employee | null, // Add this line
+    currentUser: null as Employee | null,
   }),
   actions: {
     addEmployee(name: string, position: string, department: string) {
@@ -61,6 +62,12 @@ export const useEmployeeInfoStore = defineStore("employeeInfo", {
         email,
         password,
       });
+    },
+    signOut() {
+      this.currentUser = null;
+      this.employees = [];
+      router.push("/login");
+      router.go(0);
     },
     async login(email: string, password: string) {
       const employee = this.employees.find(

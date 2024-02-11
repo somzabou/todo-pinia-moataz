@@ -27,7 +27,14 @@ export default defineComponent({
   methods: {
     fetchTodos() {
       const todoListStore = useTodoListStore();
-      this.todos = todoListStore.getTodosByEmployeeId(this.employeeId);
+
+      if (this.employeeId) {
+        // Fetch todos for a specific employee
+        this.todos = todoListStore.getTodosByEmployeeId(this.employeeId);
+      } else {
+        // Fetch all todos if employeeId is not provided
+        this.todos = todoListStore.getAllTodos();
+      }
     },
     deleteTodo(id) {
       const todoListStore = useTodoListStore();

@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <h1>Login</h1>
-    <form @submit.prevent="login">
+    <form @submit.prevent="login" class="login-form">
       <div class="form-group">
         <label for="email">Email:</label>
         <input type="email" id="email" v-model="email" required />
@@ -10,7 +10,7 @@
         <label for="password">Password:</label>
         <input type="password" id="password" v-model="password" required />
       </div>
-      <button type="submit">Login</button>
+      <button type="submit" :disabled="!email || !password">Login</button>
     </form>
   </div>
 </template>
@@ -18,7 +18,7 @@
 <script lang="ts">
 import { defineComponent, nextTick, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useEmployeeInfoStore } from "../store/useEmployeeInfoStore";
+import { useEmployeeInfoStore } from "@/store/useEmployeeInfoStore";
 
 export default defineComponent({
   name: "UserLogin",
@@ -30,10 +30,8 @@ export default defineComponent({
 
     const login = async () => {
       await store.login(email.value, password.value);
-      console.log(email);
       if (store.currentUser) {
         await nextTick();
-        console.log(email);
         router.push({ name: "TodoApp" });
       } else {
         console.error("Login failed");
@@ -51,10 +49,27 @@ export default defineComponent({
 <style scoped>
 .login {
   max-width: 400px;
-  margin: 0 auto;
+  margin: auto; /* Center horizontally */
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  bottom: 200px; /* Adjust the distance from the bottom */
+  left: 0;
+  right: 0;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group {
@@ -62,26 +77,38 @@ export default defineComponent({
 }
 
 label {
-  display: block;
   font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
 }
 
 input[type="email"],
 input[type="password"] {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   font-size: 16px;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  background-color: #f8f8f8;
 }
 
 button {
-  padding: 10px 20px;
+  padding: 12px;
   font-size: 16px;
-  background-color: #007bff;
+  background-color: #3498db;
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 </style>

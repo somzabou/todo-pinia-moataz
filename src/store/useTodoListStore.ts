@@ -15,12 +15,18 @@ export const useTodoListStore = defineStore("todoList", {
   }),
   actions: {
     addTodo(item: string, employeeId: string) {
-      this.todoList.push({ item, id: this.id++, completed: false, employeeId }); // Include employeeId when creating a new todo
+      this.todoList.push({ item, id: this.id++, completed: false, employeeId });
     },
     deleteTodo(itemID: number) {
       this.todoList = this.todoList.filter((object) => {
         return object.id !== itemID;
       });
+    },
+    adjustTodoText(idToFind: number, newText: string) {
+      const todo = this.todoList.find((obj) => obj.id === idToFind);
+      if (todo) {
+        todo.item = newText;
+      }
     },
     toggleCompleted(idToFind: number) {
       const todo = this.todoList.find((obj) => obj.id === idToFind);
@@ -35,8 +41,13 @@ export const useTodoListStore = defineStore("todoList", {
       }, 1000);
     },
     getTodosByEmployeeId(employeeId: string) {
-      // Add this method
       return this.todoList.filter((todo) => todo.employeeId === employeeId);
+    },
+    editTodoText(idToFind: number, newText: string) {
+      const todo = this.todoList.find((obj) => obj.id === idToFind);
+      if (todo) {
+        todo.item = newText;
+      }
     },
   },
 });

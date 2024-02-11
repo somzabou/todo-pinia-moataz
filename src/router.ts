@@ -2,9 +2,10 @@ import { createRouter, createWebHistory } from "vue-router";
 import EmployeeInfo from "./components/EmployeeInfo.vue";
 import TodoApp from "./components/TodoApp.vue";
 import ManageTodos from "./components/ManageTodos.vue";
-import UserLogin from "./components/UserLogin.vue";
-import UserRegister from "./components/UserRegister.vue";
+import UserLogin from "./views/authentication/UserLogin.vue";
+import UserRegister from "./views/authentication/UserRegister.vue";
 import { useEmployeeInfoStore } from "./store/useEmployeeInfoStore";
+import UserSignOut from "./views/authentication/UserSignOut.vue";
 
 const routes = [
   {
@@ -35,6 +36,12 @@ const routes = [
     component: ManageTodos,
     meta: { requiresAuth: true }, // Add meta field to indicate authentication requirement
   },
+  {
+    path: "/sign-out",
+    name: "SignOut",
+    component: UserSignOut, // Replace "SignOut" with the component that handles sign out functionality
+    meta: { requiresAuth: true }, // Add meta field to indicate authentication requirement
+  },
   // Other routes...
 ];
 
@@ -44,12 +51,16 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const store = useEmployeeInfoStore();
-  if (to.meta.requiresAuth && !store.currentUser) {
+  if (to.meta.requiresAuth && !isAuthenticated()) {
     next({ name: "login" }); // Redirect to login page if not authenticated
   } else {
     next(); // Proceed to the requested route
   }
 });
 
+function isAuthenticated() {
+  // Replace this logic with your actual authentication check
+  const store = useEmployeeInfoStore();
+  return !!store.currentUser;
+}
 export default router;

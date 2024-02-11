@@ -1,10 +1,14 @@
 <template>
-  <div v-for="todo in todoList" :key="todo.id" class="list">
-    <div class="item">
+  <div class="todo-list">
+    <div v-for="todo in todoList" :key="todo.id" class="todo-item">
       <span :class="{ completed: todo.completed }">{{ todo.item }}</span>
-      <div>
-        <span @click.stop="toggleCompleted(todo.id)">done</span>
-        <span @click="deleteTodo(todo.id)" class="x">x</span>
+      <div class="todo-actions">
+        <span @click.stop="toggleCompleted(todo.id)" class="action-icon">
+          <i class="fas fa-check">&#10003;</i>
+        </span>
+        <span @click="deleteTodo(todo.id)" class="action-icon delete-icon">
+          <i class="fas fa-trash">&#128465;</i>
+        </span>
       </div>
     </div>
   </div>
@@ -14,10 +18,10 @@
 import { defineComponent } from "vue";
 import { useTodoListStore } from "../store/useTodoListStore";
 import { storeToRefs } from "pinia";
+
 export default defineComponent({
   setup() {
     const store = useTodoListStore();
-
     const { todoList } = storeToRefs(store);
     const { toggleCompleted, deleteTodo } = store;
 
@@ -27,25 +31,54 @@ export default defineComponent({
 </script>
 
 <style scoped>
-span {
-  margin: 0 10px;
-  cursor: pointer;
+.todo-list {
+  display: center;
+  flex-direction: column;
+  align-items: center;
 }
 
-.completed {
-  text-decoration: line-through;
-}
-
-.list {
+.todo-item {
   display: flex;
-  justify-content: center;
-}
-
-.item {
-  display: flex;
-  font-size: 1.5em;
+  align-items: center;
   justify-content: space-between;
   width: 80vw;
-  padding: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.todo-item:hover {
+  background-color: #f5f5f5;
+}
+
+.todo-item .completed {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.todo-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.action-icon {
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #3498db;
+  transition: color 0.3s ease;
+}
+
+.action-icon:hover {
+  display: center;
+  color: #007bb5;
+}
+
+.delete-icon {
+  display: center;
+  color: #e74c3c;
 }
 </style>
