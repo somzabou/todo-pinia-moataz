@@ -34,6 +34,12 @@ export const useTodoListStore = defineStore("todoList", {
         todo.completed = !todo.completed;
       }
     },
+    editTodo(idToFind: number, newItem: string) {
+      const todo = this.todoList.find((obj) => obj.id === idToFind);
+      if (todo) {
+        todo.item = newItem;
+      }
+    },
     inputAlert() {
       this.showAlert = true;
       setTimeout(() => {
@@ -42,12 +48,6 @@ export const useTodoListStore = defineStore("todoList", {
     },
     getTodosByEmployeeId(employeeId: string) {
       return this.todoList.filter((todo) => todo.employeeId === employeeId);
-    },
-    editTodoText(idToFind: number, newText: string) {
-      const todo = this.todoList.find((obj) => obj.id === idToFind);
-      if (todo) {
-        todo.item = newText;
-      }
     },
   },
 });

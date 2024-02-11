@@ -9,6 +9,9 @@
         <span @click="deleteTodo(todo.id)" class="action-icon delete-icon">
           <i class="fas fa-trash">&#128465;</i>
         </span>
+        <span @click="editTodo(todo.id)" class="action-icon delete-icon">
+          <i class="fas fa-trash">&#9998;</i>
+        </span>
       </div>
     </div>
   </div>
@@ -24,8 +27,14 @@ export default defineComponent({
     const store = useTodoListStore();
     const { todoList } = storeToRefs(store);
     const { toggleCompleted, deleteTodo } = store;
+    const editTodo = (id: number) => {
+      const newText = prompt("Enter new text for the todo item:");
+      if (newText) {
+        store.editTodo(id, newText);
+      }
+    };
 
-    return { todoList, toggleCompleted, deleteTodo };
+    return { todoList, toggleCompleted, deleteTodo, editTodo };
   },
 });
 </script>
